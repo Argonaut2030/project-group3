@@ -1,3 +1,2 @@
-__pycache__
-.idea
-venv
+db.sqlite3
+.env
