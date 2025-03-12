@@ -1,0 +1,48 @@
+{% extends 'contacts/base.html' %}
+{% block body %}
+
+<div class="container mt-3">
+    {% if not user.is_authenticated %}
+    <h2>Welcome to the team project.</h2>
+    <p>If you want to use this application, please authorise.</p>
+    {% else %}
+    <h2>Contacts List</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            {% for contact in contacts %}
+            <div class="contact mb-3 p-3 border rounded">
+                <span class="text" itemprop="text">
+                    <strong>{{ contact.name }}</strong><br>
+                    Address: {{ contact.address }}<br>
+                    Phone: {{ contact.phone }}<br>
+                    Email: {{ contact.email }}<br>
+                    Birthday: {{ contact.birthday }}<br>
+                </span>
+                <div class="mt-2">
+                    <a href="{% url 'contacts:edit_contact' contact.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'contacts:delete_contact' contact.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+            <nav>
+                <ul class="pager">
+                    <li class="previous">
+                        <a class="{% if not contacts.has_previous %} disabled {% endif %}"
+                           href="{% if contacts.has_previous %} {% url 'contacts:root_paginate' contacts.previous_page_number %} {% else %} # {% endif %}">
+                            <span aria-hidden="true">←</span> Previous
+                        </a>
+                    </li>
+                    <li class="next">
+                        <a class="{% if not contacts.has_next %} disabled {% endif %}"
+                           href="{% if contacts.has_next %} {% url 'contacts:root_paginate' contacts.next_page_number %} {% else %} # {% endif %}">
+                            Next <span aria-hidden="true">→</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

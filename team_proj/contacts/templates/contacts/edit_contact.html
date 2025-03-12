@@ -1,0 +1,32 @@
+{% extends 'contacts/base.html' %}
+
+{% block body %}
+<div class="container mt-3">
+    <h2>Edit Contact</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                <li>
+                    {{ field|capfirst }}:
+                    <ul>
+                        {% for error in errors %}
+                        <li>
+                            {{ error }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'contacts:home' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
