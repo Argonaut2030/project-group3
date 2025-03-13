@@ -7,7 +7,7 @@
         {% csrf_token %}
         <div class="mb-3">
             <label for="days" class="form-label">Enter number of days:</label>
-            <input type="number" class="form-control" id="days" name="days" min="1" required>
+            <input type="number" class="form-control" id="days" name="days" min="0" required>
         </div>
         <button type="submit" class="btn btn-primary">Show contacts</button>
     </form>

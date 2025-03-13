@@ -7,7 +7,8 @@ class Contact(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255, null=True)
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(10, message='The phone number must contain at least 10 characters.'),
-                                                        MaxLengthValidator(13, message='The phone number must be a maximum of 13 characters.')])
-    email = models.EmailField()
+                                                        MaxLengthValidator(13, message='The phone number must be a maximum of 13 characters.')],
+                             unique=True)
+    email = models.EmailField(unique=True)
     birthday = models.DateField(null=True)
 
