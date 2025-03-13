@@ -1,0 +1,22 @@
+{% extends 'contacts/base.html' %}
+
+{% block body %}
+<div class="container mt-3">
+    <h2>Search Contact</h2>
+    <div class="row">
+        <div class="col-md-8">
+            {% if contacts %}
+            {% for contact in contacts %}
+            <div class="contact" itemscope="" itemtype="http://schema.org/CreativeWork">
+                    <span class="text" itemprop="text">
+                        {{ contact.name }} - {{ contact.phone }} - {{ contact.email }}
+                    </span>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No contacts found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

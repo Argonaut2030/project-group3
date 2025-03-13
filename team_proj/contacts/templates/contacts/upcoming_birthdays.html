@@ -1,0 +1,31 @@
+{% extends 'contacts/base.html' %}
+
+{% block body %}
+<div class="container mt-3">
+    <h2>Upcoming Birthdays</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="days" class="form-label">Enter number of days:</label>
+            <input type="number" class="form-control" id="days" name="days" min="1" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Show contacts</button>
+    </form>
+    {% if contacts %}
+    <div class="row mt-3">
+        <div class="col-md-8">
+            {% for contact in contacts %}
+            <div class="contact mb-3 p-3 border rounded">
+                <span class="text" itemprop="text">
+                    <strong>{{ contact.name }}</strong><br>
+                    Birthday: {{ contact.birthday }}<br>
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <p>No upcoming birthdays found within {{ days }} days.</p>
+    {% endif %}
+</div>
+{% endblock %}
