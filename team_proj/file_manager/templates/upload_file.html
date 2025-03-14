@@ -1,0 +1,9 @@
+{% extends "contacts/base.html" %}
+
+{% block body %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Завантажити</button>
+</form>
+{% endblock body %}
