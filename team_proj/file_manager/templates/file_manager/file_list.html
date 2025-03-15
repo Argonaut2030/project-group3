@@ -1,4 +1,5 @@
 {% extends 'contacts/base.html' %}
+{% load extract_file_name %}
 
 {% block body %}
 <form method="get" action="">
@@ -15,7 +16,7 @@
 <ul>
     {% for file in files %}
         <li>
-            <a href="{{ file.file.url|default:''|escape }}" target="_blank">{{ file.file.name }}</a>
+            <a href="{{ file.file.url|default:''|escape }}" target="_blank">{{ file.file.name|get_file_name }}</a>
         </li>
     {% endfor %}
 </ul>
