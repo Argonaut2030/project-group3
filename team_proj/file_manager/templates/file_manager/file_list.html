@@ -1,0 +1,22 @@
+{% extends 'contacts/base.html' %}
+
+{% block body %}
+<form method="get" action="">
+    <label for="category">Filter files by category:</label>
+    <select name="category" id="category" onchange="this.form.submit()" >
+        <option value="all" {% if selected_category == "all" %}selected{% endif %}>All files</option>
+        <option value="images" {% if selected_category == "images" %}selected{% endif %}>Image</option>
+        <option value="videos" {% if selected_category == "videos" %}selected{% endif %}>Video</option>
+        <option value="audio" {% if selected_category == "audio" %}selected{% endif %}>Audio</option>
+        <option value="documents" {% if selected_category == "documents" %}selected{% endif %}>Document</option>
+    </select>
+</form>
+
+<ul>
+    {% for file in files %}
+        <li>
+            <a href="{{ file.file.url|default:''|escape }}" target="_blank">{{ file.file.name }}</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

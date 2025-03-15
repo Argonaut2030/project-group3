@@ -14,10 +14,16 @@ def upload_file(request):
             return redirect("file_manager:file_list") 
     else:
         form = FileUploadForm()
-    return render(request, "upload_file.html", {"form": form})
+    return render(request, "file_manager/upload_file.html", {"form": form})
 
 
 @login_required
 def list_files(request):
+    category = request.GET.get("category", "all")
+    
     files = UploadedFile.objects.filter(user=request.user)
-    return render(request, "file_list.html", {"files": files})
+
+    if category != "all":
+        files = files.filter(file__contains=f"/{category}/")
+
+    return render(request, "file_manager/file_list.html", {"files": files, "selected_category": category})
