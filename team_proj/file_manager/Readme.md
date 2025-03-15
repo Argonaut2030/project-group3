@@ -108,6 +108,9 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 ```
 
 
-### 4. Переконайтеся що ваша база даних працює
+### 4. Переконайтеся що ваша база даних має необхідні міграції і працює
+```sh
+py manage.py migrate
+```
 
 
