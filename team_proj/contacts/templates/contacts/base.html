@@ -17,7 +17,7 @@
         <div class="col-md-8">
             {% if user.is_authenticated %}
             <h1>
-                <a href="{% url 'contacts:home' %}">Contacts</a>
+                <a href="{% url 'contacts:home' %}" class="btn btn-lg {% if request.resolver_match.url_name == 'home' %}btn-primary{% else %}btn-outline-primary{% endif %}">Contacts</a>
             </h1>
         </div>
         <div class="col-md-4">
