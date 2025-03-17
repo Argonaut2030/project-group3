@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "project-group3"
+version = "0.1.0"
+description = ""
+authors = ["Alex2025 <tesler2000@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.7"
+django-environ = "^0.12.0"
+psycopg2 = "^2.9.10"
+boto3 = "^1.37.12"
+django-storages = "^1.14.5"
+colorama = "^0.4.6"
+environ = "^1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
