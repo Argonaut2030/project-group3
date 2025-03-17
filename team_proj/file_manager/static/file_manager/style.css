@@ -1,0 +1,63 @@
+
+#upload_file_form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+
+input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#submit_file_upload {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#submit_file_upload:hover {
+    background: #0056b3;
+}
+
+
+.file-card {
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.file-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.file-content {
+    padding: 10px;
+    text-align: center;
+}
+
+.file-name {
+    font-weight: bold;
+    color: #007bff;
+    word-wrap: break-word;
+}
+
+.file-actions {
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,9 +1,11 @@
 {% extends "file_manager/base.html" %}
 
 {% block body %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Завантажити</button>
-</form>
+<div class="mb-3">
+    <form method="post" enctype="multipart/form-data" id="upload_file_form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id="submit_file_upload" type="submit">Upload</button>
+    </form>
+</div>
 {% endblock body %}

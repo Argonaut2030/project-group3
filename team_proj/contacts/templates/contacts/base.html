@@ -18,6 +18,8 @@
             {% if user.is_authenticated %}
             <h1>
                 <a href="{% url 'contacts:home' %}">Contacts</a>
+                
+                <a href="{% url 'file_manager:file_list' %}" style="color:grey">Files</a>
             </h1>
         </div>
         <div class="col-md-4">

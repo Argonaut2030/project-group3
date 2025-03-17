@@ -1,23 +1,48 @@
-{% extends 'contacts/base.html' %}
+{% extends "file_manager/base.html" %}
 {% load extract_file_name %}
-
 {% block body %}
-<form method="get" action="">
-    <label for="category">Filter files by category:</label>
-    <select name="category" id="category" onchange="this.form.submit()" >
-        <option value="all" {% if selected_category == "all" %}selected{% endif %}>All files</option>
-        <option value="images" {% if selected_category == "images" %}selected{% endif %}>Image</option>
-        <option value="videos" {% if selected_category == "videos" %}selected{% endif %}>Video</option>
-        <option value="audio" {% if selected_category == "audio" %}selected{% endif %}>Audio</option>
-        <option value="documents" {% if selected_category == "documents" %}selected{% endif %}>Document</option>
-    </select>
-</form>
+<div class="container mt-3">
+    {% if not user.is_authenticated %}
+    <h2>Welcome to the team project.</h2>
+    <p>If you want to use this application, please authorise.</p>
+    {% else %}
+    <h2>File List</h2>
 
-<ul>
-    {% for file in files %}
-        <li>
-            <a href="{{ file.file.url|default:''|escape }}" target="_blank">{{ file.file.name|get_file_name }}</a>
-        </li>
-    {% endfor %}
-</ul>
-{% endblock %}
+    <div class="row">
+        <div class="col-md-8">
+            {% for file in files %}
+            <div class="col-md-4">
+                <div class="file-card border rounded shadow-sm p-3 mb-3">
+                    <div class="file-content" onclick="window.open('{{ file.file.url|default:''|escape }}', '_blank')">
+                        <h6 class="file-name">{{ file.file.name|get_file_name }}</h6>
+                    </div>
+                    <div class="file-actions mt-2 d-flex justify-content-between">
+                        <a href="{{ file.file.url }}" download class="btn btn-success btn-sm">Download</a>
+                        <a href="{% url 'file_manager:delete_file' file.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <nav>
+                <ul class="pager">
+                    <li class="previous">
+                        <a class="{% if not files.has_previous %} disabled {% endif %}"
+                           href="{% if files.has_previous %} {% url 'files:root_paginate' files.previous_page_number %} {% else %} # {% endif %}">
+                            <span aria-hidden="true">←</span> Previous
+                        </a>
+                    </li>
+                    <li class="next">
+                        <a class="{% if not files.has_next %} disabled {% endif %}"
+                           href="{% if files.has_next %} {% url 'files:root_paginate' files.next_page_number %} {% else %} # {% endif %}">
+                            Next <span aria-hidden="true">→</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock body %}
+
+
