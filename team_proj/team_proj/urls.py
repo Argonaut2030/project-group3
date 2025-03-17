@@ -19,11 +19,12 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path, include
 from contacts.views import main
+from notes.views import main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main, name='home'),
     path('contacts/', include('contacts.urls')),
+    path('notes/', include('notes.urls')),
     path('users/', include('users.urls')),
-    path('files/', include('file_manager.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
