@@ -16,7 +16,7 @@
     <div class="row header-box pt-3 mb-3">
         <div class="col-md-8">
             {% if user.is_authenticated %}
-            <h1>
+            <h1>            
                 <a href="{% url 'contacts:home' %}" style="color: blue;">Contacts</a>
                 <a href="{% url 'notes:home' %}" style="color: gray;">Notes</a>
             </h1>

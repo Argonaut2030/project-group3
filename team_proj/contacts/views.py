@@ -13,7 +13,9 @@ def add_contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            contact = form.save(commit=False)
+            contact.user = request.user
+            contact.save()
             messages.success(request, 'Contact added successfully.')
             return redirect('contacts:home')
     else:
@@ -31,7 +33,7 @@ def upcoming_birthdays(request, days=None):
         days = int(days)
         today = datetime.now().date()
         target_date = today + timedelta(days=days)
-        contacts = Contact.objects.filter(birthday__month=target_date.month, birthday__day=target_date.day)
+        contacts = Contact.objects.filter(user=request.user, birthday__month=target_date.month, birthday__day=target_date.day)
         return render(request, 'contacts/upcoming_birthdays.html', {'contacts': contacts, 'days': days})
     return render(request, 'contacts/upcoming_birthdays.html')
 
@@ -40,14 +42,18 @@ def upcoming_birthdays(request, days=None):
 def search_contacts(request):
     query = request.GET.get('q')
     if query:
-        contacts = Contact.objects.filter(name__icontains=query)
+        contacts = Contact.objects.filter(user=request.user, name__icontains=query)
     else:
-        contacts = Contact.objects.all()
+        contacts = Contact.objects.filter(user=request.user)
     return render(request, 'contacts/search_contacts.html', {'contacts': contacts})
 
 @login_required
 def edit_contact(request, contact_id):
-    contact = Contact.objects.get(id=contact_id)
+    contact = Contact.objects.filter(id=contact_id, user=request.user).first()
+    if not contact:
+        messages.error(request, 'Contact not found.')
+        return redirect('contacts:home')
+
     if request.method == 'POST':
         form = ContactForm(request.POST, instance=contact)
         if form.is_valid():
@@ -60,7 +66,11 @@ def edit_contact(request, contact_id):
 
 @login_required
 def delete_contact(request, contact_id):
-    contact = Contact.objects.get(id=contact_id)
+    contact = Contact.objects.filter(id=contact_id, user=request.user).first()
+    if not contact:
+        messages.error(request, 'Contact not found.')
+        return redirect('contacts:home')
+
     contact.delete()
     messages.success(request, 'Contact deleted successfully.')
     return redirect('contacts:home')
@@ -71,7 +81,7 @@ def main(request, page = 1):
     if not request.user.is_authenticated:
         return render(request, 'contacts/index.html', {'user_authenticated': False})
 
-    contacts = Contact.objects.all().order_by('name')
+    contacts = Contact.objects.filter(user=request.user).order_by('name')
     per_page = 10
     paginator = Paginator(contacts, per_page)
     contacts_on_page = paginator.page(page)

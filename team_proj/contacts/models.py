@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Contact(models.Model):
@@ -11,4 +12,4 @@ class Contact(models.Model):
                              unique=True)
     email = models.EmailField(unique=True)
     birthday = models.DateField(null=True)
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
