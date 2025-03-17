@@ -4,6 +4,7 @@ from . import views
 
 app_name = 'contacts'
 
+
 urlpatterns = [
     path('', views.main, name='home'),
     path('<int:page>', views.main, name='root_paginate'),
