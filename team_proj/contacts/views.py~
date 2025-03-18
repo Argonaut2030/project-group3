@@ -8,7 +8,6 @@ from .forms import ContactForm
 from .models import Contact
 
 
-@login_required
 def home(request):
     return render(request, 'contacts/index.html')
 

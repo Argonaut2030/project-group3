@@ -8,7 +8,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("notes", "0001_initial"),
-        ("tags", "0001_initial"),
     ]
 
     operations = [

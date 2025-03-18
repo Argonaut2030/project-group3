@@ -18,13 +18,18 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path, include
-from contacts.views import main
-from notes.views import main
+from contacts.views import main as contact_main
+from notes.views import main as note_main
+from file_manager.views import list_files
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main, name='home'),
+    path('', contact_main, name='home'),
+    path('', note_main, name='notes_home'),
+    path('', list_files, name='file_list'),
     path('contacts/', include('contacts.urls')),
     path('notes/', include('notes.urls')),
+    path('file_manager/', include('file_manager.urls')),
     path('users/', include('users.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

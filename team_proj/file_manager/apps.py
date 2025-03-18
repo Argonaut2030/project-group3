@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TagsConfig(AppConfig):
+class FileManagerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'tags'
+    name = 'file_manager'
