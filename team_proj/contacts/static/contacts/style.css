@@ -1,4 +1,4 @@
-.contacts {
+.contacts, note. {
     padding: 10px;
     margin-bottom: 30px;
     border: 1px solid #333333;
@@ -6,19 +6,19 @@
     box-shadow: 2px 2px 3px #333333;
 }
 
-.contacts span.text {
+.contacts span.text, .note span.text {
     display: block;
     margin-bottom: 5px;
     font-size: large;
     font-style: italic;
 }
 
-.contacts small.name {
+.contacts small.name, .note small.name {
     font-weight: bold;
     color: #3677E8;
 }
 
-.contact .actions {
+.contact .actions, .note .actions {
     margin-top: 10px;
 }
 

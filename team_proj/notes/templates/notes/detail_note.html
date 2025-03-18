@@ -1,0 +1,15 @@
+{% extends 'contacts/base.html' %}
+
+{% block body %}
+<div class="container mt-3">
+    <h2>{{ note.name }}</h2>
+    <p>{{ note.description }}</p>
+    <p>Tags:
+        {% for tag in note.tags.all %}
+            <span class="badge bg-secondary">{{ tag.name }}</span>
+        {% endfor %}
+    </p>
+    <p>Created at: {{ note.created_at }}</p>
+    <p>Last updated: {{ note.updated_at }}</p>
+</div>
+{% endblock %}

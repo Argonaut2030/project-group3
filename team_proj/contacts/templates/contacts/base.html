@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Contacts App</title>
+    <title>Welcome to team project</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'contacts/style.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'contacts/style.css' %}">
+    <link rel="stylesheet" href="{% static 'file_manager/style.css' %}">
 </head>
 <body>
 <div class="container">
@@ -17,31 +18,65 @@
         <div class="col-md-8">
             {% if user.is_authenticated %}
             <h1>
-                <a href="{% url 'contacts:home' %}">Contacts</a>
-                
-                <a href="{% url 'file_manager:file_list' %}" style="color:grey">Files</a>
-                <a href="{% url 'notes:home' %}" style="color: gray;">Notes</a>
+                <a href="{% url 'contacts:home' %}" class="btn {% if request.resolver_match.url_name == 'home' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Contacts</a>
+                <a href="{% url 'notes:notes_home' %}" class="btn {% if request.resolver_match.url_name == 'notes_home' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Notes</a>
+                <a href="{% url 'file_manager:file_list' %}" class="btn {% if request.resolver_match.url_name == 'file_list' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Files</a>
             </h1>
         </div>
         <div class="col-md-4">
-            <p>
-                <a href="{% url 'contacts:add_contact' %}" class="btn btn-primary">Add contact</a>
-                <a href="{% url 'contacts:upcoming_birthdays' %}" class="btn btn-info">Upcoming Birthdays</a>
-                <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                {% if request.resolver_match.url_name == 'home' %}
+                    <a href="{% url 'contacts:add_contact' %}" class="btn btn-primary btn-sm">Add Contact</a>
+                    <a href="{% url 'contacts:upcoming_birthdays' %}" class="btn btn-info btn-sm">Upcoming Birthdays</a>
+                {% elif request.resolver_match.url_name == 'notes_home' %}
+                    <a href="{% url 'notes:add_note' %}" class="btn btn-primary btn-sm">Add Note</a>
+                {% elif request.resolver_match.url_name == 'file_list' %}
+                    <a href="{% url 'file_manager:file_upload' %}" class="btn btn-primary btn-sm">Add File</a>
+                {% endif %}
+
+                <form method="post" action="{% url 'users:logout' %}" class="d-inline">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Logout</button>
+                    <button type="submit" class="btn btn-danger btn-lg">Logout</button>
                 </form>
-                <form method="get" action="{% url 'contacts:search_contacts' %}" class="d-flex">
-                    <input class="form-control me-2" type="search" name="q" placeholder="Search contacts"
-                           aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            {% else %}
-                <a href="{% url 'users:signup' %}" class="btn btn-primary">SignUp</a>
-                <a href="{% url 'users:login' %}" class="btn btn-primary">Login</a>
-            {% endif %}
-            </p>
+            </div>
+
+            <div class="mt-3">
+                {% if request.resolver_match.url_name == 'home' %}
+                    <form method="get" action="{% url 'contacts:search_contacts' %}" class="d-flex">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Search contacts" aria-label="Search">
+                        <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
+                    </form>
+                {% elif request.resolver_match.url_name == 'notes_home' %}
+                    <form method="get" action="{% url 'notes:search_notes' %}" class="d-flex">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Search notes" aria-label="Search">
+                        <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
+                    </form>
+                {% elif request.resolver_match.url_name == 'file_list' %}
+                    <form method="get" action="{% url 'file_manager:search_files' %}" class="d-flex">
+                        <input class="form-control me-2" type="search" name="f_search" placeholder="Search files" aria-label="Search">
+                        <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
+                    </form>
+                    <div class="form-floating mt-2">
+                        <form method="get" action="">
+                            <label for="category">Filter files by category:</label>
+                            <select name="category" id="category" class="form-select">
+                                <option value="all" {% if selected_category == "all" %}selected{% endif %}>All files</option>
+                                <option value="images" {% if selected_category == "images" %}selected{% endif %}>Image</option>
+                                <option value="videos" {% if selected_category == "videos" %}selected{% endif %}>Video</option>
+                                <option value="audio" {% if selected_category == "audio" %}selected{% endif %}>Audio</option>
+                                <option value="documents" {% if selected_category == "documents" %}selected{% endif %}>Document</option>
+                            </select>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
         </div>
+        {% else %}
+            <div class="d-flex gap-2">
+                <a href="{% url 'users:signup' %}" class="btn btn-primary btn-lg">SignUp</a>
+                <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg">Login</a>
+            </div>
+        {% endif %}
     </div>
 
     {% if messages %}

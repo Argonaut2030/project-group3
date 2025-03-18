@@ -1,7 +1,11 @@
-{% extends 'notes/base.html' %}
+{% extends 'contacts/base.html' %}
 {% block body %}
 
 <div class="container mt-3">
+    {% if not user.is_authenticated %}
+    <h2>Welcome to the team project.</h2>
+    <p>If you want to use this application, please authorise.</p>
+    {% else %}
     <h2>Notes List</h2>
 
     {% if notes %}
@@ -20,7 +24,10 @@
                         {% endfor %}
                     </span>
                     <div class="mt-2">
-                        </div>
+                        <a href="{% url 'notes:detail' note.id %}" class="btn btn-warning btn-sm">Detail note</a>
+                        <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'notes:delete_note' note.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
                 </div>
                 {% endfor %}
 
