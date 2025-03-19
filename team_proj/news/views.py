@@ -1,10 +1,6 @@
-
-
-# Create your views here.
-# news/views.py
-
 from django.shortcuts import render
 import requests
+from datetime import datetime
 
 # Функція для отримання фінансових новин з Alpha Vantage
 def get_financial_news():
@@ -24,12 +20,24 @@ def get_financial_news():
         if 'feed' in data:
             feed = data['feed']
             formatted_articles = []
-            for article in feed:
+            for article in feed[:5]:  # Обрізаємо до перших 5 новин
+                # Форматування дати
+                try:
+                    time_published = article.get('time_published')
+                    if time_published:
+                        # Перетворення дати з формату "yyyyMMdd'T'HHmmss"
+                        formatted_date = datetime.strptime(time_published, "%Y%m%dT%H%M%S").strftime("%B %d, %Y, %I:%M %p")
+                    else:
+                        formatted_date = "Дата не вказана"
+                except Exception as e:
+                    formatted_date = "Помилка при форматуванні дати"
+                    print(f"Error formatting date: {e}")
+
                 formatted_articles.append({
                     'title': article.get('title'),
                     'summary': article.get('summary'),
                     'url': article.get('url'),
-                    'time_published': article.get('time_published'),
+                    'time_published': formatted_date,  # Додаємо відформатовану дату
                     'source': article.get('source'),
                     'banner_image': article.get('banner_image'),
                 })

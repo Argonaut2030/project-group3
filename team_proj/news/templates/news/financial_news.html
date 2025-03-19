@@ -11,26 +11,31 @@
     <h2>Latest Financial News</h2>
 
     {% if news %}
-        <div class="row">
-            <div class="col-md-12">
-                {% for article in news %}
-                <div class="news-item mb-3 p-3 border rounded">
-                    <span class="text" itemprop="text">
-                        <strong>{{ article.title }}</strong><br>
-                        Summary: {{ article.summary }}<br>
-                        Published: {{ article.time_published|date:"F j, Y, g:i a" }}<br>
-                        Source: <a href="{{ article.url }}" target="_blank">{{ article.source }}</a><br>
-                        <img src="{{ article.banner_image }}" alt="News Banner" class="img-fluid mt-2" />
-                    </span>
-                    <div class="mt-2">
-                        <a href="{{ article.url }}" class="btn btn-primary btn-sm" target="_blank">Read More</a>
-                    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% for article in news %}
+            <div class="news-item mb-3 p-3 border rounded">
+                <span class="text" itemprop="text">
+                    <strong>{{ article.title }}</strong><br>
+                    Summary: {{ article.summary }}<br>
+                    Published: {{ article.time_published }}<br>
+                    Source: <a href="{{ article.url }}" target="_blank">{{ article.source }}</a><br>
+                    {% if article.banner_image %}
+                    <img src="{{ article.banner_image }}" alt="News Banner" class="img-fluid mt-2" />
+                    {% else %}
+                    <img src="https://via.placeholder.com/150" alt="No Image" class="img-fluid mt-2" />
+                    {% endif %}
+                </span>
+                <div class="mt-2">
+                    <a href="{{ article.url }}" class="btn btn-primary btn-sm" target="_blank">Read More</a>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
+
         </div>
+    </div>
     {% else %}
-        <p>No news found.</p>
+    <p>No news found.</p>
     {% endif %}
     {% endif %}
 </div>
