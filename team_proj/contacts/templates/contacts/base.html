@@ -20,18 +20,19 @@
             <h1>
                 <a href="{% url 'contacts:home' %}" class="btn {% if request.resolver_match.url_name == 'home' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Contacts</a>
                 <a href="{% url 'notes:notes_home' %}" class="btn {% if request.resolver_match.url_name == 'notes_home' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Notes</a>
-                <a href="{% url 'file_manager:file_list' %}" class="btn {% if request.resolver_match.url_name == 'file_list' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Files</a>
+                <a href="{% url 'file_manager:file_list' %}" class="btn {% if request.resolver_match.url_name == 'file_list' or request.resolver_match.url_name == 'search_files'%}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Files</a>
             </h1>
         </div>
         <div class="col-md-4">
             <div class="d-flex flex-wrap gap-2 align-items-center">
+                {% block add_some %}{% endblock add_some %}
                 {% if request.resolver_match.url_name == 'home' %}
                     <a href="{% url 'contacts:add_contact' %}" class="btn btn-primary btn-sm">Add Contact</a>
                     <a href="{% url 'contacts:upcoming_birthdays' %}" class="btn btn-info btn-sm">Upcoming Birthdays</a>
                 {% elif request.resolver_match.url_name == 'notes_home' %}
                     <a href="{% url 'notes:add_note' %}" class="btn btn-primary btn-sm">Add Note</a>
-                {% elif request.resolver_match.url_name == 'file_list' %}
-                    <a href="{% url 'file_manager:file_upload' %}" class="btn btn-primary btn-sm">Add File</a>
+                {% comment %} {% elif request.resolver_match.url_name == 'file_list' %}
+                    <a href="{% url 'file_manager:file_upload' %}" class="btn btn-primary btn-sm">Add File</a> {% endcomment %}
                 {% endif %}
 
                 <form method="post" action="{% url 'users:logout' %}" class="d-inline">
@@ -41,6 +42,7 @@
             </div>
 
             <div class="mt-3">
+                {% block forms %}{% endblock forms %}
                 {% if request.resolver_match.url_name == 'home' %}
                     <form method="get" action="{% url 'contacts:search_contacts' %}" class="d-flex">
                         <input class="form-control me-2" type="search" name="q" placeholder="Search contacts" aria-label="Search">
@@ -51,23 +53,24 @@
                         <input class="form-control me-2" type="search" name="q" placeholder="Search notes" aria-label="Search">
                         <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
                     </form>
-                {% elif request.resolver_match.url_name == 'file_list' %}
+                {% comment %} {% elif request.resolver_match.url_name == 'file_list'%}
                     <form method="get" action="{% url 'file_manager:search_files' %}" class="d-flex">
                         <input class="form-control me-2" type="search" name="f_search" placeholder="Search files" aria-label="Search">
                         <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
                     </form>
                     <div class="form-floating mt-2">
-                        <form method="get" action="">
-                            <label for="category">Filter files by category:</label>
-                            <select name="category" id="category" class="form-select">
+                        <form method="get" action="{% url 'file_manager:search_files' %}">
+                            <label for="file_category">Filter files by category:</label>
+                            <select name="file_category" id="file_category" class="form-select">
                                 <option value="all" {% if selected_category == "all" %}selected{% endif %}>All files</option>
                                 <option value="images" {% if selected_category == "images" %}selected{% endif %}>Image</option>
                                 <option value="videos" {% if selected_category == "videos" %}selected{% endif %}>Video</option>
                                 <option value="audio" {% if selected_category == "audio" %}selected{% endif %}>Audio</option>
                                 <option value="documents" {% if selected_category == "documents" %}selected{% endif %}>Document</option>
                             </select>
+                            <input type="hidden" name="file_category" value="{{ selected_category }}">
                         </form>
-                    </div>
+                    </div> {% endcomment %}
                 {% endif %}
             </div>
         </div>
