@@ -20,7 +20,7 @@ def get_financial_news():
         if 'feed' in data:
             feed = data['feed']
             formatted_articles = []
-            for article in feed[:5]:  # Обрізаємо до перших 5 новин
+            for article in feed[:10]:  # Обрізаємо до перших 10 новин
                 # Форматування дати
                 try:
                     time_published = article.get('time_published')
