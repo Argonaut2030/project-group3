@@ -1,0 +1,42 @@
+<!-- news/templates/news/financial_news.html -->
+
+{% extends 'contacts/base.html' %}
+
+{% block body %}
+<div class="container mt-3">
+    {% if not user.is_authenticated %}
+    <h2>Welcome to the financial news section.</h2>
+    <p>If you want to view the news, please authorize.</p>
+    {% else %}
+    <h2>Latest Financial News</h2>
+
+    {% if news %}
+    <div class="row">
+        <div class="col-md-12">
+            {% for article in news %}
+            <div class="news-item mb-3 p-3 border rounded">
+                <span class="text" itemprop="text">
+                    <strong>{{ article.title }}</strong><br>
+                    Summary: {{ article.summary }}<br>
+                    Published: {{ article.time_published }}<br>
+                    Source: <a href="{{ article.url }}" target="_blank">{{ article.source }}</a><br>
+                    {% if article.banner_image %}
+                    <img src="{{ article.banner_image }}" alt="News Banner" class="img-fluid mt-2" />
+                    {% else %}
+                    <img src="https://via.placeholder.com/150" alt="No Image" class="img-fluid mt-2" />
+                    {% endif %}
+                </span>
+                <div class="mt-2">
+                    <a href="{{ article.url }}" class="btn btn-primary btn-sm" target="_blank">Read More</a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% else %}
+    <p>No news found.</p>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
