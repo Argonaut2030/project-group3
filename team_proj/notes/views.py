@@ -59,13 +59,7 @@ def search_notes(request):
     notes = paginator.get_page(page_number)
 
     return render(request, 'notes/search_notes.html', {'notes': notes, 'query': query})
-        notes = Note.objects.filter(user=request.user)
 
-    paginator = Paginator(notes, 10)
-    page_number = request.GET.get('page')
-    notes = paginator.get_page(page_number)
-
-    return render(request, 'notes/search_notes.html', {'notes': notes, 'query': query})
 
 def detail_note(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
