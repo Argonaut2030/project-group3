@@ -15,15 +15,17 @@ def home(request):
 @login_required
 def add_contact(request):
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = ContactForm(request.POST, user=request.user)
         if form.is_valid():
             contact = form.save(commit=False)
             contact.user = request.user
             contact.save()
             messages.success(request, 'Contact added successfully.')
             return redirect('contacts:home')
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = ContactForm()
+        form = ContactForm(user=request.user)
     return render(request, 'contacts/add_contact.html', {'form': form})
 
 @login_required
@@ -53,20 +55,18 @@ def search_contacts(request):
 
 @login_required
 def edit_contact(request, contact_id):
-    contact = Contact.objects.filter(id=contact_id, user=request.user).first()
-    if not contact:
-        messages.error(request, 'Contact not found.')
-        return redirect('contacts:home')
-
+    contact = Contact.objects.get(id=contact_id, user=request.user)
     if request.method == 'POST':
-        form = ContactForm(request.POST, instance=contact)
+        form = ContactForm(request.POST, instance=contact, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Contact updated successfully.')
             return redirect('contacts:home')
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = ContactForm(instance=contact)
-    return render(request, 'contacts/edit_contact.html', {'form': form})
+        form = ContactForm(instance=contact, user=request.user)
+    return render(request, 'contacts/edit_contact.html', {'form': form, 'contact': contact})
 
 @login_required
 def delete_contact(request, contact_id):

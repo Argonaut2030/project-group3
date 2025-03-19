@@ -4,7 +4,13 @@ from django.contrib.auth.models import User
 
 class Tag(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=150, null=False, unique=True)
+    name = models.CharField(max_length=150, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'name'], name='tag of username')
+        ]
 
     def __str__(self):
         return self.name

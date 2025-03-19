@@ -1,32 +1,11 @@
 {% extends 'contacts/base.html' %}
-
 {% block body %}
-<div class="container mt-3">
-    <h2>Add New Note and Tag</h2>
+<div class="container mt-4">
+    <h2>Add Note</h2>
     <form method="post">
         {% csrf_token %}
-
-        <h3>Note Details</h3>
-        {{ note_form.as_p }}
-
-        <h3>Tag Details</h3>
-        {{ tag_form.as_p }}
-
-        <button type="submit" class="btn btn-primary">Submit All</button>
-        <button type="reset" class="btn btn-secondary">Reset All</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save Note</button>
     </form>
-
-    {% if note_form.errors or tag_form.errors %}
-    <div class="alert alert-danger">
-        <ul>
-            {% for field, errors in note_form.errors.items %}
-            <li>{{ field|capfirst }}: <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></li>
-            {% endfor %}
-            {% for field, errors in tag_form.errors.items %}
-            <li>{{ field|capfirst }}: <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}

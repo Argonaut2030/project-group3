@@ -28,7 +28,7 @@ def list_files(request, page=1):
         return render(request, "files/file_list.html", {"user_authenticated": False})
     category = request.GET.get("category", "all")
 
-    files = UploadedFile.objects.filter(user=request.user)
+    files = UploadedFile.objects.filter(user=request.user).order_by('-uploaded_at')
 
     if category != "all":
         files = files.filter(file__contains=f"/{category}/")
