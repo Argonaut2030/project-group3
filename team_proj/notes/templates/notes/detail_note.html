@@ -2,8 +2,9 @@
 
 {% block body %}
 <div class="container mt-3">
-    <h2>{{ note.name }}</h2>
-    <p>{{ note.description }}</p>
+    <h2>Detail note</h2>
+    <p>Note name: {{ note.name }}</p>
+    <p>Description: {{ note.description }}</p>
     <p>Tags:
         {% for tag in note.tags.all %}
             <span class="badge bg-secondary">{{ tag.name }}</span>
@@ -11,5 +12,8 @@
     </p>
     <p>Created at: {{ note.created_at }}</p>
     <p>Last updated: {{ note.updated_at }}</p>
+    <div class="mt-4">
+        <a href="{% url 'notes:notes_home' %}" class="btn btn-primary">Return to notes</a>
+    </div>
 </div>
 {% endblock %}

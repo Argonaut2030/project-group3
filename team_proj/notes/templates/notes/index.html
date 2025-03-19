@@ -1,4 +1,5 @@
 {% extends 'contacts/base.html' %}
+{% extends 'contacts/base.html' %}
 {% block body %}
 
 <div class="container mt-3">
@@ -6,56 +7,100 @@
     <h2>Welcome to the team project.</h2>
     <p>If you want to use this application, please authorise.</p>
     {% else %}
+    {% if not user.is_authenticated %}
+    <h2>Welcome to the team project.</h2>
+    <p>If you want to use this application, please authorise.</p>
+    {% else %}
     <h2>Notes List</h2>
 
-    {% if notes %}
-        <div class="row">
-            <div class="col-md-12">
-                {% for note in notes %}
-                <div class="note mb-3 p-3 border rounded">
-                    <span class="text" itemprop="text">
-                        <strong>{{ note.name }}</strong><br>
-                        Description: {{ note.description }}<br>
-                        Tags:
-                        {% for tag in note.tags.all %}
-                            <span class="badge bg-secondary">{{ tag.name }}</span>
-                        {% empty %}
-                            <span class="badge bg-light text-muted">No Tags</span>
-                        {% endfor %}
-                    </span>
-                    <div class="mt-2">
-                        <a href="{% url 'notes:detail' note.id %}" class="btn btn-warning btn-sm">Detail note</a>
-                        <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'notes:delete_note' note.id %}" class="btn btn-danger btn-sm">Delete</a>
-                    </div>
-                </div>
-                {% endfor %}
-
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        {% if notes.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="{% url 'notes:root_paginate' notes.previous_page_number %}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li class="page-item active">
-                            <a class="page-link" href="#">{{ notes.number }}</a>
-                        </li>
-                        {% if notes.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="{% url 'notes:root_paginate' notes.next_page_number %}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
+    <form method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Пошук за тегами...">
+            <button type="submit" class="btn btn-primary">Пошук</button>
         </div>
+    </form>
+
+    <div class="mb-3">
+        <a href="?sort=name">Сортувати за назвою</a> |
+        <a href="?sort=-created_at">Сортувати за датою створення (новіші)</a> |
+        <a href="?sort=created_at">Сортувати за датою створення (старіші)</a> |
+        <a href="?sort=tags">Сортувати за тегами</a>
+    </div>
+
+    {% if notes %}
+        {% if sort_by == 'tags' %}
+            {% for group in notes %}
+                <h3>{{ group.tag }}</h3>
+                {% for note in group.notes %}
+                    <div class="note mb-3 p-3 border rounded">
+                        <span class="text" itemprop="text">
+                            <strong>{{ note.name }}</strong><br>
+                            Description: {{ note.description }}<br>
+                            Tags:
+                            {% for tag in note.tags.all %}
+                                <span class="badge bg-secondary">{{ tag.name }}</span>
+                            {% empty %}
+                                <span class="badge bg-light text-muted">No Tags</span>
+                            {% endfor %}
+                        </span>
+                        <div class="mt-2">
+                            <a href="{% url 'notes:detail' note.id %}" class="btn btn-warning btn-sm">Detail note</a>
+                            <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'notes:delete_note' note.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for note in notes %}
+                        <div class="note mb-3 p-3 border rounded">
+                            <span class="text" itemprop="text">
+                                <strong>{{ note.name }}</strong><br>
+                                Description: {{ note.description }}<br>
+                                Tags:
+                                {% for tag in note.tags.all %}
+                                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                                {% empty %}
+                                    <span class="badge bg-light text-muted">No Tags</span>
+                                {% endfor %}
+                            </span>
+                            <div class="mt-2">
+                                <a href="{% url 'notes:detail' note.id %}" class="btn btn-info btn-sm">Detail note</a>
+                                <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'notes:delete_note' note.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% if notes.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="{% url 'notes:root_paginate' notes.previous_page_number %}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="page-item active">
+                                <a class="page-link" href="#">{{ notes.number }}</a>
+                            </li>
+                            {% if notes.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{% url 'notes:root_paginate' notes.next_page_number %}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        {% endif %}
     {% else %}
         <p>No notes found.</p>
+    {% endif %}
     {% endif %}
 </div>
 
