@@ -1,9 +1,11 @@
 {% extends 'contacts/base.html' %}
-
 {% block body %}
 <div class="container mt-3">
+    {% if not user.is_authenticated %}
+    <h2>Welcome to the team project.</h2>
+    <p>If you want to use this application, please authorise.</p>
+    {% else %}
     <h2>Notes List</h2>
-
     <form method="get" class="mb-3">
         <div class="input-group">
             <input type="text" name="q" class="form-control" placeholder="Пошук за тегами...">
