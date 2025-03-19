@@ -26,7 +26,7 @@ def upload_file(request):
 def list_files(request, page=1):
     if not request.user.is_authenticated:
         return render(request, "files/file_list.html", {"user_authenticated": False})
-    category = request.GET.get("category", "all")
+    category = request.GET.get("file_category", "all")
 
     files = UploadedFile.objects.filter(user=request.user)
 
@@ -49,7 +49,7 @@ def list_files(request, page=1):
 @login_required
 def search_files(request):
     query = request.GET.get("f_search", "")
-    category = request.GET.get("category", "all")
+    category = request.GET.get("file_category", "all")
 
     files = UploadedFile.objects.filter(user=request.user)
 
