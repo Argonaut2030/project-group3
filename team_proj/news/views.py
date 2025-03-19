@@ -1,3 +1,5 @@
+
+
 # Create your views here.
 # news/views.py
 
@@ -9,8 +11,8 @@ def get_financial_news():
     url = "https://www.alphavantage.co/query"
     params = {
         'function': 'NEWS_SENTIMENT',
-        'symbol': 'MSFT',  # Можна змінити на бажану валюту чи акцію
-        'apikey': 'RKH85LHYW46A30RI',  # Ваш API ключ
+        'symbol': 'MSFT',
+        'apikey': 'RKH85LHYW46A30RI',
     }
 
     try:
@@ -18,13 +20,26 @@ def get_financial_news():
         response.raise_for_status()  # Перевірка на успішний статус запиту
         data = response.json()
 
-        if 'articles' in data:
-            return data['articles']
+        # Перевірка на наявність новин у відповіді
+        if 'feed' in data:
+            feed = data['feed']
+            formatted_articles = []
+            for article in feed:
+                formatted_articles.append({
+                    'title': article.get('title'),
+                    'summary': article.get('summary'),
+                    'url': article.get('url'),
+                    'time_published': article.get('time_published'),
+                    'source': article.get('source'),
+                    'banner_image': article.get('banner_image'),
+                })
+            return formatted_articles
         else:
             return []
     except requests.exceptions.RequestException as e:
         print(f"Error fetching news: {e}")
         return []
+
 
 # Вигляд для відображення новин
 def financial_news(request):

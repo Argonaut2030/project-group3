@@ -21,6 +21,8 @@
                 <a href="{% url 'contacts:home' %}" class="btn {% if request.resolver_match.url_name == 'home' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Contacts</a>
                 <a href="{% url 'notes:notes_home' %}" class="btn {% if request.resolver_match.url_name == 'notes_home' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Notes</a>
                 <a href="{% url 'file_manager:file_list' %}" class="btn {% if request.resolver_match.url_name == 'file_list' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Files</a>
+                <a href="{% url 'news:financial_news' %}" class="btn {% if request.resolver_match.url_name == 'financial_news' %}btn-success{% else %}btn-outline-success{% endif %}  btn-lg">Financial News</a>  <!-- Додано для новин -->
+
             </h1>
         </div>
         <div class="col-md-4">
