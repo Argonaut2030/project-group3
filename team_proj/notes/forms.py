@@ -1,30 +1,26 @@
-from django.forms import ModelForm, CharField, TextInput, CheckboxSelectMultiple, ModelMultipleChoiceField, \
-    SelectMultiple
-from .models import Note,Tag
+# forms.py (in your notes app)
+from django import forms
+from .models import Note, Tag
 
-
-class TagForm(ModelForm):
-    name = CharField(min_length=3, max_length=150, required=True, widget=TextInput())
-
-    class Meta:
-        model = Tag
-        fields = ['name']
-
-
-class NoteForm(ModelForm):
-    existing_tags = ModelMultipleChoiceField(
-        queryset=Tag.objects.none(),  # оновимо в __init__
-        widget=CheckboxSelectMultiple,
+class NoteForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
         required=False,
-        label="Choose existing tags"
     )
-    new_tag = CharField(max_length=150, required=False, label="Add new tag")
+    new_tags = forms.CharField(
+        max_length=200,
+        required=False,
+        help_text="Enter new tags, separated by commas.",
+    )
 
     class Meta:
         model = Note
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'tags', 'new_tags']
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user')
-        super().__init__(*args, **kwargs)
-        self.fields['existing_tags'].queryset = Tag.objects.filter(user=user)
+    def clean_new_tags(self):
+        new_tags = self.cleaned_data.get('new_tags')
+        if new_tags:
+            return [tag.strip() for tag in new_tags.split(',')]
+        return []
+

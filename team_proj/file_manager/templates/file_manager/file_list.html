@@ -1,5 +1,29 @@
 {% extends "contacts/base.html" %}
 {% load extract_file_name %}
+
+{% block add_some %}
+<a href="{% url 'file_manager:file_upload' %}" class="btn btn-primary btn-sm">Add File</a>
+{% endblock add_some %}
+
+{% block forms %}
+<div class="form-floating mt-2">
+    <form method="get" action="{% url 'file_manager:search_files' %}" class="d-flex">
+        <input class="form-control me-2" type="search" name="f_search" placeholder="Search files"
+               value="{{ f_search }}" aria-label="Search">
+    
+        <select name="file_category" id="file_category" class="form-select me-2">
+            <option value="all" {% if selected_category == "all" %}selected{% endif %}>All files</option>
+            <option value="images" {% if selected_category == "images" %}selected{% endif %}>Image</option>
+            <option value="videos" {% if selected_category == "videos" %}selected{% endif %}>Video</option>
+            <option value="audio" {% if selected_category == "audio" %}selected{% endif %}>Audio</option>
+            <option value="documents" {% if selected_category == "documents" %}selected{% endif %}>Document</option>
+        </select>
+    
+        <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
+    </form>
+</div>
+{% endblock forms %}
+
 {% block body %}
 <div class="container mt-3">
     {% if not user.is_authenticated %}
@@ -7,7 +31,7 @@
     <p>If you want to use this application, please authorise.</p>
     {% else %}
     <h2>File List</h2>
-
+    
     <div class="row">
         <div class="col-md-8">
             {% for file in files %}
@@ -17,7 +41,7 @@
                         <h6 class="file-name">{{ file.file.name|get_file_name }}</h6>
                     </div>
                     <div class="file-actions mt-2 d-flex justify-content-between">
-                        <a href="{{ file.file.url }}" download class="btn btn-success btn-sm">Download</a>
+                        <a href="{{ AWS_S3_CUSTOM_DOMAIN }}/{{ file.file.name }}" download class="btn btn-success btn-sm">Download</a>
                         <a href="{% url 'file_manager:delete_file' file.id %}" class="btn btn-danger btn-sm">Delete</a>
                     </div>
                 </div>

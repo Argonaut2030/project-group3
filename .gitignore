@@ -11,6 +11,7 @@ lerna-debug.log*
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
+*.pyc
 pids
 *.pid
 *.seed
@@ -78,6 +79,7 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
+venv
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -132,3 +134,13 @@ dist
 __pycache__/
 *.pyc
 *.pyo
+
+# IDE
+.idea/
+
+# Python міграції (якщо не хочеш комітити)
+**/migrations/*.py
+!**/migrations/__init__.py   # якщо хочеш залишати порожні пакети міграцій
+
+# Тимчасові резервні файли редакторів
+*~

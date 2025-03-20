@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'contacts',
     'users',
     'file_manager',
+    'news'
 ]
 
 MIDDLEWARE = [
@@ -91,6 +92,9 @@ DATABASES = {
         'PORT': env('DB_PORT'),
     }
 }
+
+
+# Email configuration
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')

@@ -86,7 +86,7 @@ def main(request, page = 1):
         return render(request, 'contacts/index.html', {'user_authenticated': False})
 
     contacts = Contact.objects.filter(user=request.user).order_by('name')
-    per_page = 10
+    per_page = 2
     paginator = Paginator(contacts, per_page)
     contacts_on_page = paginator.page(page)
     return render(request, 'contacts/index.html', {'contacts': contacts_on_page, 'user_authenticated': True})
