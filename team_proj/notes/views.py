@@ -62,7 +62,7 @@ def search_notes(request):
 
     return render(request, 'notes/search_notes.html', {'notes': notes, 'query': query})
 
-
+@login_required
 def detail_note(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
     return render(request, 'notes/detail_note.html', {"note": note})

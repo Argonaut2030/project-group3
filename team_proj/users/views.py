@@ -28,7 +28,8 @@ def signupuser(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(to='contacts:home')
+            messages.success(request, 'Registration successful. To use the application, please log in.')
+            return redirect(to='users:login')
         else:
             return render(request, 'users/signup.html', context={"form": form})
 
