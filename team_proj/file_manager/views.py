@@ -26,13 +26,10 @@ def upload_file(request):
 def list_files(request, page=1):
     if not request.user.is_authenticated:
         return render(request, "files/file_list.html", {"user_authenticated": False})
-    category = request.GET.get("file_category", "all")
-
+    
     files = UploadedFile.objects.filter(user=request.user).order_by('-uploaded_at')
 
-    if category != "all":
-        files = files.filter(file__contains=f"/{category}/")
-    per_page = 10
+    per_page = 6
     paginator = Paginator(files, per_page)
     files_on_page = paginator.page(page)
     return render(
@@ -40,14 +37,16 @@ def list_files(request, page=1):
         "file_manager/file_list.html",
         {
             "files": files_on_page,
-            "selected_category": category,
             "user_authenticated": True,
         },
     )
 
 
 @login_required
-def search_files(request):
+def search_files(request, page=1):
+    if not request.user.is_authenticated:
+        return render(request, "files/file_list.html", {"user_authenticated": False})
+    
     query = request.GET.get("f_search", "")
     category = request.GET.get("file_category", "all")
 
@@ -61,11 +60,12 @@ def search_files(request):
 
     return render(
         request,
-        "file_manager/file_list.html",
+        "file_manager/file_search.html",
         {
             "files": files,
             "selected_category": category,
             "f_search": query,
+            "user_authenticated": True,
         },
     )
 
