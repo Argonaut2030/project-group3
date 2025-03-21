@@ -29,13 +29,13 @@
                 <ul class="pager">
                     <li class="previous">
                         <a class="{% if not contacts.has_previous %} disabled {% endif %}"
-                           href="{% if contacts.has_previous %} {% url 'contacts:root_paginate' contacts.previous_page_number %} {% else %} # {% endif %}">
+                           href="{% if contacts.has_previous %} {% url 'contacts:contact_paginate' contacts.previous_page_number %} {% else %} # {% endif %}">
                             <span aria-hidden="true">←</span> Previous
                         </a>
                     </li>
                     <li class="next">
                         <a class="{% if not contacts.has_next %} disabled {% endif %}"
-                           href="{% if contacts.has_next %} {% url 'contacts:root_paginate' contacts.next_page_number %} {% else %} # {% endif %}">
+                           href="{% if contacts.has_next %} {% url 'contacts:contact_paginate' contacts.next_page_number %} {% else %} # {% endif %}">
                             Next <span aria-hidden="true">→</span></a>
                     </li>
                 </ul>

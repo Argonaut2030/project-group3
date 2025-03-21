@@ -8,7 +8,7 @@ app_name = 'notes'
 
 urlpatterns = [
     path('', views.main, name='notes_home'),
-    path('page/<int:page>/', views.main, name='root_paginate'),
+    path('page/<int:page>/', views.main, name='note_paginate'),
     # path('tag/', views.tag, name='tag'),
     path('add_note/', views.add_note, name='add_note'),
     path('search_notes/', views.search_notes, name='search_notes'),

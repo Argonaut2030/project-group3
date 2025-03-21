@@ -21,3 +21,26 @@ class ContactForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'birthday': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        # Ігноруємо свій власний об'єкт, якщо він редагується
+        qs = Contact.objects.filter(user=self.user, email=email)
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise ValidationError('This email is already used by another contact.')
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        qs = Contact.objects.filter(user=self.user, phone=phone)
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise ValidationError('This phone number is already used by another contact.')
+        return phone

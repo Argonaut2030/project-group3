@@ -130,3 +130,17 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.idea/
+
+# Python міграції (якщо не хочеш комітити)
+**/migrations/*.py
+!**/migrations/__init__.py   # якщо хочеш залишати порожні пакети міграцій
+
+# Тимчасові резервні файли редакторів
+*~

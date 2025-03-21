@@ -71,7 +71,7 @@
                         <ul class="pagination">
                             {% if notes.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="{% url 'notes:root_paginate' notes.previous_page_number %}" aria-label="Previous">
+                                <a class="page-link" href="{% url 'notes:note_paginate' notes.previous_page_number %}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -81,7 +81,7 @@
                             </li>
                             {% if notes.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="{% url 'notes:root_paginate' notes.next_page_number %}" aria-label="Next">
+                                <a class="page-link" href="{% url 'notes:note_paginate' notes.next_page_number %}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>

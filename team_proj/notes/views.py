@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from django.db.models import Q, Min
 import itertools  # Додайте цей імпорт
@@ -54,16 +54,19 @@ def search_notes(request):
     else:
         notes = Note.objects.filter(user=request.user)
 
+    notes = notes.order_by('-id')
+
     paginator = Paginator(notes, 10)
     page_number = request.GET.get('page')
     notes = paginator.get_page(page_number)
 
     return render(request, 'notes/search_notes.html', {'notes': notes, 'query': query})
 
-
+@login_required
 def detail_note(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
     return render(request, 'notes/detail_note.html', {"note": note})
+
 
 @login_required
 def edit_note(request, note_id):
@@ -72,24 +75,25 @@ def edit_note(request, note_id):
         messages.error(request, 'Note not found.')
         return redirect('notes:notes_home')
 
-def edit_note(request, note_id):
-    note = Note.objects.filter(id=note_id, user=request.user).first()
-    if not note:
-        messages.error(request, 'Note not found.')
-        return redirect('notes:notes_home')
-
     if request.method == 'POST':
         form = NoteForm(request.POST, instance=note)
-        form = NoteForm(request.POST, instance=note)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Note updated successfully.')
-            return redirect('notes:notes_home')
+            note = form.save()
+
+            # Обробка нових тегів із поля "new_tags"
+            new_tags_str = request.POST.get('new_tags', '')
+            if new_tags_str:
+                new_tags = [tag.strip() for tag in new_tags_str.split(',') if tag.strip()]
+                for tag_name in new_tags:
+                    tag, created = Tag.objects.get_or_create(name=tag_name)
+                    note.tags.add(tag)
+
             messages.success(request, 'Note updated successfully.')
             return redirect('notes:notes_home')
     else:
         form = NoteForm(instance=note)
     return render(request, 'notes/edit_note.html', {'form': form})
+
 
 @login_required
 def delete_note(request, note_id):
@@ -103,7 +107,7 @@ def delete_note(request, note_id):
     return redirect('notes:notes_home')
 
 @login_required
-def main(request, page = 1):
+def main(request, page=1):
     if not request.user.is_authenticated:
         return render(request, 'notes/index.html', {'user_authenticated': False})
 
@@ -119,13 +123,24 @@ def main(request, page = 1):
         grouped_notes = []
         for tag in all_tags:
             notes_with_tag = Note.objects.filter(user=request.user, tags=tag)
-            if notes_with_tag.exists(): #Check if notes with this tag exist
+            if notes_with_tag.exists():  # Check if notes with this tag exist
                 grouped_notes.append({'tag': tag.name, 'notes': notes_with_tag})
         notes = grouped_notes
     elif sort_by:
         notes = notes.order_by(sort_by)
 
-    per_page = 10
+    per_page = 2
     paginator = Paginator(notes, per_page)
-    notes_on_page = paginator.page(page)
-    return render(request, 'notes/index.html', {'notes': notes_on_page, 'user_authenticated': True, 'query': query, 'sort_by': sort_by})
+    try:
+        notes_on_page = paginator.page(page)
+    except PageNotAnInteger:
+        notes_on_page = paginator.page(1)
+    except EmptyPage:
+        notes_on_page = paginator.page(paginator.num_pages)
+
+    return render(request, 'notes/index.html', {
+        'notes': notes_on_page,
+        'user_authenticated': True,
+        'query': query,
+        'sort_by': sort_by
+    })

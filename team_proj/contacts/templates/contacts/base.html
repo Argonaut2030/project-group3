@@ -28,11 +28,13 @@
         <div class="col-md-4">
             <div class="d-flex flex-wrap gap-2 align-items-center">
                 {% block add_some %}{% endblock add_some %}
-                {% if request.resolver_match.url_name == 'home' %}
+                {% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'contact_paginate' %}
                     <a href="{% url 'contacts:add_contact' %}" class="btn btn-primary btn-sm">Add Contact</a>
                     <a href="{% url 'contacts:upcoming_birthdays' %}" class="btn btn-info btn-sm">Upcoming Birthdays</a>
-                {% elif request.resolver_match.url_name == 'notes_home' %}
+                {% elif request.resolver_match.url_name == 'notes_home' or request.resolver_match.url_name == 'note_paginate' %}
                     <a href="{% url 'notes:add_note' %}" class="btn btn-primary btn-sm">Add Note</a>
+                {% elif request.resolver_match.url_name == 'upcoming_birthdays' %}
+                    <a href="{% url 'contacts:add_contact' %}" class="btn btn-primary btn-sm">Add Contact</a>
                 {% comment %} {% elif request.resolver_match.url_name == 'file_list' %}
                     <a href="{% url 'file_manager:file_upload' %}" class="btn btn-primary btn-sm">Add File</a> {% endcomment %}
                 {% endif %}
@@ -45,12 +47,12 @@
 
             <div class="mt-3">
                 {% block forms %}{% endblock forms %}
-                {% if request.resolver_match.url_name == 'home' %}
+                {% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'contact_paginate' %}
                     <form method="get" action="{% url 'contacts:search_contacts' %}" class="d-flex">
                         <input class="form-control me-2" type="search" name="q" placeholder="Search contacts" aria-label="Search">
                         <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
                     </form>
-                {% elif request.resolver_match.url_name == 'notes_home' %}
+                {% elif request.resolver_match.url_name == 'notes_home' or request.resolver_match.url_name == 'note_paginate' %}
                     <form method="get" action="{% url 'notes:search_notes' %}" class="d-flex">
                         <input class="form-control me-2" type="search" name="q" placeholder="Search notes" aria-label="Search">
                         <button class="btn btn-outline-info btn-sm" type="submit">Search</button>
