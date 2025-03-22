@@ -14,6 +14,7 @@ boto3 = "^1.37.12"
 django-storages = "^1.14.5"
 colorama = "^0.4.6"
 environ = "^1.0"
+requests = "^2.32.3"
 
 
 [build-system]

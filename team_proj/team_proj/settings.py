@@ -141,6 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static/'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
@@ -160,16 +161,16 @@ LOGIN_REDIRECT_URL = "contacts:home"
 
 # Next 7 lines are for testing with minio, if you are testing coment the above 5 lines and uncomment the next 7 lines
 
-# AWS_ACCESS_KEY_ID = env("MINIO_ROOT_USER")
-# AWS_SECRET_ACCESS_KEY = env("MINIO_ROOT_PASSWORD")
-# AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
-# AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
-# AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
-# AWS_S3_CUSTOM_DOMAIN = f"127.0.0.1:9000/{AWS_STORAGE_BUCKET_NAME}"
-# AWS_S3_ADDRESSING_STYLE = "path"
-#
-#
-# AWS_S3_FILE_OVERWRITE = False
+AWS_ACCESS_KEY_ID = env("MINIO_ROOT_USER")
+AWS_SECRET_ACCESS_KEY = env("MINIO_ROOT_PASSWORD")
+AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+AWS_S3_CUSTOM_DOMAIN = f"127.0.0.1:9000/{AWS_STORAGE_BUCKET_NAME}"
+AWS_S3_ADDRESSING_STYLE = "path"
+
+
+AWS_S3_FILE_OVERWRITE = False
 
 STORAGES = {
     "default": {

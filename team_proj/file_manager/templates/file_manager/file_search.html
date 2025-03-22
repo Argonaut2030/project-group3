@@ -1,8 +1,5 @@
 {% extends "contacts/base.html" %}
 {% load extract_file_name %}
-{% block add_some %}
-<a href="{% url 'file_manager:file_upload' %}" class="btn btn-primary btn-sm">Add File</a>
-{% endblock add_some %}
 
 {% block forms %}
 <div class="form-floating mt-2">
@@ -22,6 +19,7 @@
     </form>
 </div>
 {% endblock forms %}
+
 
 {% block body %}
 <div class="container mt-3">
@@ -49,21 +47,6 @@
             </div>
             {% endfor %}
         </div>
-        <nav>
-            <ul class="pager">
-                <li class="previous">
-                    <a class="{% if not files.has_previous %} disabled {% endif %}"
-                       href="{% if files.has_previous %} {% url 'file_manager:files_paginate' files.previous_page_number %} {% else %} # {% endif %}">
-                        <span aria-hidden="true">←</span> Previous
-                    </a>
-                </li>
-                <li class="next">
-                    <a class="{% if not files.has_next %} disabled {% endif %}"
-                       href="{% if files.has_next %} {% url 'file_manager:files_paginate' files.next_page_number %} {% else %} # {% endif %}">
-                        Next <span aria-hidden="true">→</span></a>
-                </li>
-            </ul>
-        </nav>
     {% endif %}
 </div>
 

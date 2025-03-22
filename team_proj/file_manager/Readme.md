@@ -107,6 +107,9 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 # AWS_S3_ADDRESSING_STYLE = "path"
 ```
 
+1. Далі зайдіть на localhost:9001 і створіть бакет з назвою яка у вас зберігається в AWS_STORAGE_BUCKET_NAME
+
+2. Перейдіть у Administrator/Buckets і змініть політику доступу контейнера на Public
 
 ### 4. Переконайтеся що ваша база даних має необхідні міграції і працює
 ```sh

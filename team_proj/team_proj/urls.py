@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.static import static
@@ -23,14 +24,18 @@ from notes.views import main as note_main
 from file_manager.views import list_files
 
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', contact_main, name='home'),
-    path('', note_main, name='notes_home'),
-    path('', list_files, name='file_list'),
-    path('contacts/', include('contacts.urls')),
-    path('notes/', include('notes.urls')),
-    path('file_manager/', include('file_manager.urls')),
-    path('users/', include('users.urls')),
-    path('news/', include('news.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = (
+    [
+        path("admin/", admin.site.urls),
+        path("", contact_main, name="home"),
+        path("", note_main, name="notes_home"),
+        path("", list_files, name="file_list"),
+        path("contacts/", include("contacts.urls")),
+        path("notes/", include("notes.urls")),
+        path("file_manager/", include("file_manager.urls")),
+        path("users/", include("users.urls")),
+        path("news/", include("news.urls")),
+    ]
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+)

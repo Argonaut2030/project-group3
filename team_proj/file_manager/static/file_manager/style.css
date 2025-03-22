@@ -37,23 +37,25 @@ input[type="file"] {
 
 .file-card {
     background: #fff;
-    cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
 }
 
 .file-card:hover {
     transform: scale(1.02);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .file-content {
     padding: 10px;
-    text-align: center;
+    text-align: left;
+    width: 100%;
 }
 
 .file-name {
+    font-family: 'Roboto', sans-serif;
     font-weight: bold;
-    color: #007bff;
+    font-size: 24px;
     word-wrap: break-word;
 }
 
