@@ -14,10 +14,10 @@
     </form>
 
     <div class="mb-3">
-        <a href="?sort=name">Сортувати за назвою</a> |
-        <a href="?sort=-created_at">Сортувати за датою створення (новіші)</a> |
-        <a href="?sort=created_at">Сортувати за датою створення (старіші)</a> |
-        <a href="?sort=tags">Сортувати за тегами</a>
+        <a href="{% url 'notes:note_paginate' 1 %}?sort=name">Сортувати за назвою</a> |
+        <a href="{% url 'notes:note_paginate' 1 %}?sort=-created_at">Сортувати за датою створення (новіші)</a> |
+        <a href="{% url 'notes:note_paginate' 1 %}?sort=created_at">Сортувати за датою створення (старіші)</a> |
+        <a href="{% url 'notes:note_paginate' 1 %}?sort=tags">Сортувати за тегами</a>
     </div>
 
     {% if notes %}
@@ -67,32 +67,32 @@
                         </div>
                     {% endfor %}
 
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            {% if notes.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="{% url 'notes:note_paginate' notes.previous_page_number %}" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            <li class="page-item active">
-                                <a class="page-link" href="#">{{ notes.number }}</a>
-                            </li>
-                            {% if notes.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="{% url 'notes:note_paginate' notes.next_page_number %}" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
                 </div>
             </div>
-        {% endif %}
-    {% else %}
-        <p>No notes found.</p>
+            {% endif %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if notes.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'notes:note_paginate' notes.previous_page_number %}?sort={{sort_by}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ notes.number }}</a>
+                    </li>
+                    {% if notes.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'notes:note_paginate' notes.next_page_number %}?sort={{sort_by}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% else %}
+            <p>No notes found.</p>
     {% endif %}
     {% endif %}
 </div>

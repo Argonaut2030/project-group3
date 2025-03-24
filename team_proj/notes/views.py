@@ -50,7 +50,6 @@ def search_notes(request):
     query = request.GET.get('q')
     if query:
         notes = Note.objects.filter(user=request.user, name__icontains=query)
-        notes = Note.objects.filter(user=request.user, name__icontains=query)
     else:
         notes = Note.objects.filter(user=request.user)
 
@@ -112,7 +111,7 @@ def main(request, page=1):
         return render(request, 'notes/index.html', {'user_authenticated': False})
 
     query = request.GET.get('q')
-    sort_by = request.GET.get('sort')
+    sort_by = request.GET.get('sort', 'name')
     notes = Note.objects.filter(user=request.user)
 
     if query:
