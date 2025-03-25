@@ -32,7 +32,7 @@ MINIO_ROOT_PASSWORD=supersecretpassword
 
 
 
-# File Manager
+# **File Manager**
 
 ## Опис
 `file_manager` — це додаток Django для завантаження, збереження та управління файлами в AWS S3. Файли зберігаються у вигляді:
