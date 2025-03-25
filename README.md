@@ -29,6 +29,7 @@ Repository for the educational Python project. Start date 10/03/2025
 # .env
 MINIO_ROOT_USER=admin
 MINIO_ROOT_PASSWORD=supersecretpassword
+```
 
 
 
@@ -37,8 +38,7 @@ MINIO_ROOT_PASSWORD=supersecretpassword
 ## Опис
 `file_manager` — це додаток Django для завантаження, збереження та управління файлами в AWS S3. Файли зберігаються у вигляді:
 
-```
-S3 Bucket /
+```S3 Bucket /
     user_{id}/
         images/
         videos/
